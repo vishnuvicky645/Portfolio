@@ -3,7 +3,7 @@ services:
     name: portfolio
     env: python
     buildCommand: ./build.sh
-    startCommand: gunicorn portfolio_project.wsgi
+    startCommand: gunicorn portfolio_project.wsgi:application
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.8
