@@ -13,7 +13,7 @@
             <p class="hero-bio">{{ profile.short_intro|default:'I design and build clean, reliable web applications with a strong focus on user experience and maintainable code.' }}</p>
             <div class="hero-cta">
                 <a href="#projects" class="btn btn-primary">View Projects</a>
-                <a href="{{ profile.resume_url|default:'#' }}" target="_blank" rel="noopener" class="btn btn-outline">Download Resume</a>
+                <a href="{% static 'files/resume.pdf' %}" target="_blank" rel="noopener" class="btn btn-outline">Download Resume</a>
             </div>
             <div class="hero-socials" aria-label="Social Links">
                 {% if profile.github_url %}<a href="{{ profile.github_url }}" target="_blank" rel="noopener">GitHub</a>{% else %}<a href="#" target="_blank" rel="noopener">GitHub</a>{% endif %}
@@ -22,11 +22,7 @@
             </div>
         </div>
         <div class="hero-card fade-in-up delay-1">
-            {% if profile and profile.profile_image %}
-            <img class="profile-image" src="{{ profile.profile_image.url }}" alt="{{ profile.full_name|default:'Profile' }} photo">
-            {% else %}
-            <img class="profile-image" src="{% static 'images/profile-placeholder.svg' %}" alt="Professional profile photo placeholder">
-            {% endif %}
+            <img class="profile-image" src="{% static 'images/IMG_20251224_172551.jpg.jpeg' %}" alt="{{ profile.full_name|default:'Profile' }} photo">
             <p class="availability">Open to internships and full-time opportunities.</p>
             <p><strong>Email:</strong> {{ profile.email|default:'you@example.com' }}</p>
             <p><strong>Location:</strong> {{ profile.location|default:'Add your location' }}</p>
@@ -214,11 +210,8 @@
                 <p><strong>Issuer:</strong> {{ certificate.issuer }}</p>
                 {% if certificate.issue_date %}<p><strong>Date:</strong> {{ certificate.issue_date }}</p>{% endif %}
                 {% if certificate.credential_id %}<p><strong>ID:</strong> {{ certificate.credential_id }}</p>{% endif %}
-                {% if certificate.certificate_file %}
-                <a href="{{ certificate.certificate_file.url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View Certificate</a>
-                {% elif certificate.credential_url %}
-                <a href="{{ certificate.credential_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View Certificate</a>
-                {% endif %}
+                {% cycle 'files/Coursera_Supervised_ML.pdf' 'files/cipher_schools_python.pdf' 'files/free-code-camp.pdf' as certificate_static_file %}
+                <a href="{% static certificate_static_file %}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View Certificate</a>
             </article>
             {% empty %}
             <article class="card">
