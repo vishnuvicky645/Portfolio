@@ -41,7 +41,7 @@ _read_local_env_file(BASE_DIR)
 SECRET_KEY = 'django-insecure-wrv!e_sy8jvw1zp2h0muk9t_t+!mz8fs9y3j62k6-zrc3p$c&0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', 'localhost']
 
