@@ -1,0 +1,336 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ profile.full_name|default:'My Portfolio' }}{% endblock title %}
+
+{% block content %}
+<section class="hero" id="home">
+    <div class="container hero-grid">
+        <div class="hero-content fade-in-up">
+            <p class="eyebrow">Personal Portfolio</p>
+            <h1>{{ profile.full_name|default:'Your Full Name' }}</h1>
+            <h2>{{ profile.headline|default:'BTech CSE Student | Web Developer' }}</h2>
+            <p class="hero-bio">{{ profile.short_intro|default:'I design and build clean, reliable web applications with a strong focus on user experience and maintainable code.' }}</p>
+            <div class="hero-cta">
+                <a href="#projects" class="btn btn-primary">View Projects</a>
+                <a href="{{ profile.resume_url|default:'#' }}" target="_blank" rel="noopener" class="btn btn-outline">Download Resume</a>
+            </div>
+            <div class="hero-socials" aria-label="Social Links">
+                {% if profile.github_url %}<a href="{{ profile.github_url }}" target="_blank" rel="noopener">GitHub</a>{% else %}<a href="#" target="_blank" rel="noopener">GitHub</a>{% endif %}
+                {% if profile.linkedin_url %}<a href="{{ profile.linkedin_url }}" target="_blank" rel="noopener">LinkedIn</a>{% else %}<a href="#" target="_blank" rel="noopener">LinkedIn</a>{% endif %}
+                <a href="mailto:{{ profile.email|default:'yourmail@example.com' }}">Email</a>
+            </div>
+        </div>
+        <div class="hero-card fade-in-up delay-1">
+            {% if profile and profile.profile_image %}
+            <img class="profile-image" src="{{ profile.profile_image.url }}" alt="{{ profile.full_name|default:'Profile' }} photo">
+            {% else %}
+            <img class="profile-image" src="{% static 'images/profile-placeholder.svg' %}" alt="Professional profile photo placeholder">
+            {% endif %}
+            <p class="availability">Open to internships and full-time opportunities.</p>
+            <p><strong>Email:</strong> {{ profile.email|default:'you@example.com' }}</p>
+            <p><strong>Location:</strong> {{ profile.location|default:'Add your location' }}</p>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="section">
+    <div class="container fade-in-up">
+        <h3>About Me</h3>
+        <p class="section-text">{{ profile.about_me|default:'I am a 3rd year BTech Computer Science student who enjoys building practical, user-focused software products. I am currently strengthening my full-stack development skills through project-based learning and open-source collaboration. My goal is to begin my career as a software engineer and contribute to impactful products while continuously growing as a developer.' }}</p>
+        <div class="about-meta">
+            <article class="meta-card">
+                <h4>Education Snapshot</h4>
+                <p><strong>College:</strong> {{ profile.college_name|default:'Your College Name' }}</p>
+                <p><strong>Branch:</strong> {{ profile.branch|default:'Computer Science and Engineering (CSE)' }}</p>
+                <p><strong>Year:</strong> {{ profile.current_year|default:'3rd Year' }}</p>
+            </article>
+            <article class="meta-card">
+                <h4>Career Goal</h4>
+                <p>{{ profile.career_goal|default:'To become a software engineer focused on scalable web products, clean architecture, and meaningful user experiences.' }}</p>
+            </article>
+            <article class="meta-card">
+                <h4>Hobbies</h4>
+                <p>{{ profile.hobbies|default:'Coding challenges, tech blogging, cricket, and exploring Linux tooling.' }}</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section id="skills" class="section section-alt">
+    <div class="container fade-in-up">
+        <h3>Skills</h3>
+        <div class="skills-category-grid">
+            <article class="skill-card">
+                <h4>Programming Languages</h4>
+                <ul class="tag-list">
+                    {% for skill in programming_languages %}
+                    <li>{{ skill.name }}</li>
+                    {% empty %}
+                    <li>Add skills from admin</li>
+                    {% endfor %}
+                </ul>
+            </article>
+            <article class="skill-card">
+                <h4>Frameworks/Libraries</h4>
+                <ul class="tag-list">
+                    {% for skill in frameworks_libraries %}
+                    <li>{{ skill.name }}</li>
+                    {% empty %}
+                    <li>Add skills from admin</li>
+                    {% endfor %}
+                </ul>
+            </article>
+            <article class="skill-card">
+                <h4>Tools</h4>
+                <ul class="tag-list">
+                    {% for skill in tools %}
+                    <li>{{ skill.name }}</li>
+                    {% empty %}
+                    <li>Add skills from admin</li>
+                    {% endfor %}
+                </ul>
+            </article>
+            <article class="skill-card">
+                <h4>Databases</h4>
+                <ul class="tag-list">
+                    {% for skill in databases %}
+                    <li>{{ skill.name }}</li>
+                    {% empty %}
+                    <li>Add skills from admin</li>
+                    {% endfor %}
+                </ul>
+            </article>
+        </div>
+        {% if soft_skills %}
+        <div class="extra-skills panel">
+            <h4>Soft Skills</h4>
+            <ul class="chip-list">
+                {% for skill in soft_skills %}
+                <li>{{ skill.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<section id="projects" class="section">
+    <div class="container fade-in-up">
+        <h3>Projects</h3>
+        <div class="projects-grid">
+            {% for project in projects %}
+            <article class="project-card">
+                <div class="project-content">
+                    <h4>{{ project.title }}</h4>
+                    <p>{{ project.description }}</p>
+                    <p><strong>Tech Stack:</strong></p>
+                    <div class="project-tags">
+                        <span class="tag-pill">{{ project.technologies }}</span>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Clean UI and responsive layout</li>
+                        <li>Well-structured backend logic</li>
+                        <li>Production-ready project structure</li>
+                    </ul>
+                    <div class="project-links">
+                        {% if project.github_url %}<a href="{{ project.github_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-primary">GitHub</a>{% endif %}
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <article class="panel">
+                <p>No projects added yet. Add projects from admin to display them here.</p>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="experience" class="section section-alt">
+    <div class="container fade-in-up">
+        <h3>Experience</h3>
+        <div class="timeline-list">
+            {% for experience in experiences %}
+            <article class="timeline-item">
+                <h4>{{ experience.role }}{% if experience.organization %} - {{ experience.organization }}{% endif %}</h4>
+                <p><strong>Duration:</strong> {{ experience.duration }}</p>
+                <p><strong>Tech Used:</strong> {{ experience.tech_used|default:'Add tech stack in admin' }}</p>
+                <ul>
+                    {% for point in experience.key_points.splitlines %}
+                    {% if point %}
+                    <li>{{ point }}</li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </article>
+            {% empty %}
+            <article class="timeline-item">
+                <h4>Web Development Intern (Placeholder)</h4>
+                <p><strong>Duration:</strong> May 2025 - July 2025</p>
+                <p><strong>Tech Used:</strong> HTML, CSS, JavaScript, Django</p>
+                <ul>
+                    <li>Built and maintained responsive frontend components.</li>
+                    <li>Collaborated on backend APIs and bug fixes.</li>
+                    <li>Improved page load performance and UI consistency.</li>
+                </ul>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="education" class="section">
+    <div class="container fade-in-up">
+        <h3>Education</h3>
+        <div class="stack-grid">
+            {% for education in educations %}
+            <article class="panel">
+                <h4>{{ education.degree }}</h4>
+                <p><strong>College:</strong> {{ education.institution }}</p>
+                <p><strong>Year:</strong> {{ education.year_range|default:'Add year range in admin' }}</p>
+                {% if education.cgpa %}<p><strong>CGPA:</strong> {{ education.cgpa }}</p>{% endif %}
+                {% if education.description %}<p>{{ education.description }}</p>{% endif %}
+            </article>
+            {% empty %}
+            <article class="panel">
+                <h4>BTech in Computer Science and Engineering</h4>
+                <p><strong>College:</strong> Your College Name</p>
+                <p><strong>Year:</strong> 3rd Year (2023 - 2027)</p>
+                <p><strong>CGPA:</strong> 8.5 / 10 (Optional Placeholder)</p>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="certifications" class="section section-alt">
+    <div class="container fade-in-up">
+        <h3>Certifications</h3>
+        <div class="cards-grid cert-grid">
+            {% for certificate in certificates %}
+            <article class="card">
+                <h4>{{ certificate.title }}</h4>
+                <p><strong>Issuer:</strong> {{ certificate.issuer }}</p>
+                {% if certificate.issue_date %}<p><strong>Date:</strong> {{ certificate.issue_date }}</p>{% endif %}
+                {% if certificate.credential_id %}<p><strong>ID:</strong> {{ certificate.credential_id }}</p>{% endif %}
+                {% if certificate.certificate_file %}
+                <a href="{{ certificate.certificate_file.url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View Certificate</a>
+                {% elif certificate.credential_url %}
+                <a href="{{ certificate.credential_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View Certificate</a>
+                {% endif %}
+            </article>
+            {% empty %}
+            <article class="card">
+                <h4>Python for Everybody</h4>
+                <p><strong>Issuer:</strong> Coursera</p>
+                <p><strong>Year:</strong> 2025</p>
+            </article>
+            <article class="card">
+                <h4>Full Stack Web Development</h4>
+                <p><strong>Issuer:</strong> Udemy</p>
+                <p><strong>Year:</strong> 2025</p>
+            </article>
+            <article class="card">
+                <h4>SQL Fundamentals</h4>
+                <p><strong>Issuer:</strong> HackerRank</p>
+                <p><strong>Year:</strong> 2024</p>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="achievements" class="section">
+    <div class="container fade-in-up">
+        <h3>Achievements</h3>
+        <div class="stack-grid">
+            <article class="panel">
+                <ul class="simple-list">
+                    {% for achievement in achievements %}
+                    <li>
+                        <strong>{{ achievement.title }}</strong>{% if achievement.year %} ({{ achievement.year }}){% endif %}
+                        {% if achievement.details %} - {{ achievement.details }}{% endif %}
+                    </li>
+                    {% empty %}
+                    <li>Top 10 finalist in college hackathon (2025).</li>
+                    <li>Solved 300+ coding problems across coding platforms.</li>
+                    <li>Maintained consistent academic performance and project work.</li>
+                    {% endfor %}
+                </ul>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section id="open-source" class="section section-alt">
+    <div class="container fade-in-up">
+        <h3>Open Source</h3>
+        <div class="stack-grid">
+            <article class="panel">
+                <ul class="simple-list">
+                    {% for contribution in open_source_contributions %}
+                    <li>
+                        <strong>{{ contribution.title }}</strong>
+                        {% if contribution.repository %} - {{ contribution.repository }}{% endif %}
+                        {% if contribution.description %}: {{ contribution.description }}{% endif %}
+                        {% if contribution.pr_link %}<a href="{{ contribution.pr_link }}" target="_blank" rel="noopener">PR Link</a>{% endif %}
+                    </li>
+                    {% empty %}
+                    <li>Contributed bug fixes and small feature improvements.</li>
+                    <li>Created and reviewed pull requests on GitHub repositories.</li>
+                    <li>Engaged with maintainers and participated in code reviews.</li>
+                    {% endfor %}
+                </ul>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="section">
+    <div class="container fade-in-up">
+        <h3>Contact</h3>
+
+        {% if messages %}
+        <div class="alert success">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="contact-grid">
+            <article class="panel">
+                <h4>Get In Touch</h4>
+                <p><strong>Email:</strong> {{ profile.email|default:'you@example.com' }}</p>
+                <p><strong>GitHub:</strong> {% if profile.github_url %}<a href="{{ profile.github_url }}" target="_blank" rel="noopener">{{ profile.github_url }}</a>{% else %}github.com/yourusername{% endif %}</p>
+                <p><strong>LinkedIn:</strong> {% if profile.linkedin_url %}<a href="{{ profile.linkedin_url }}" target="_blank" rel="noopener">{{ profile.linkedin_url }}</a>{% else %}linkedin.com/in/yourusername{% endif %}</p>
+                <p><strong>Location:</strong> {{ profile.location|default:'Add your location' }}</p>
+            </article>
+
+            <form method="post" class="contact-form panel">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <label for="id_full_name">Full Name</label>
+                {{ form.full_name }}
+                {{ form.full_name.errors }}
+
+                <label for="id_email">Email</label>
+                {{ form.email }}
+                {{ form.email.errors }}
+
+                <label for="id_subject">Subject</label>
+                {{ form.subject }}
+                {{ form.subject.errors }}
+
+                <label for="id_message">Message</label>
+                {{ form.message }}
+                {{ form.message.errors }}
+
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock content %}
