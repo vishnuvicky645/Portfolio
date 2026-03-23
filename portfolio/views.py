@@ -34,13 +34,12 @@ def home(request):
 					f"Message:\n{contact_message.message}"
 				)
 				EMAIL_HOST_USER = settings.EMAIL_HOST_USER
-				to_email = receiver_email
 				sent_count = send_mail(
 					email_subject,
 					email_body,
 					EMAIL_HOST_USER,
-					[to_email],
-					fail_silently=True,
+					[EMAIL_HOST_USER],
+					fail_silently=False,
 				)
 				if sent_count == 1:
 					messages.success(request, "Your message was sent successfully.")
