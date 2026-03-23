@@ -13,7 +13,11 @@
             <p class="hero-bio">{{ profile.short_intro|default:'I design and build clean, reliable web applications with a strong focus on user experience and maintainable code.' }}</p>
             <div class="hero-cta">
                 <a href="#projects" class="btn btn-primary">View Projects</a>
+                {% if profile and profile.resume_url %}
+                <a href="{{ profile.resume_url }}" target="_blank" rel="noopener" class="btn btn-outline">Download Resume</a>
+                {% else %}
                 <a href="{% static 'files/resume.pdf' %}" target="_blank" rel="noopener" class="btn btn-outline">Download Resume</a>
+                {% endif %}
             </div>
             <div class="hero-socials" aria-label="Social Links">
                 {% if profile.github_url %}<a href="{{ profile.github_url }}" target="_blank" rel="noopener">GitHub</a>{% else %}<a href="#" target="_blank" rel="noopener">GitHub</a>{% endif %}
@@ -210,8 +214,11 @@
                 <p><strong>Issuer:</strong> {{ certificate.issuer }}</p>
                 {% if certificate.issue_date %}<p><strong>Date:</strong> {{ certificate.issue_date }}</p>{% endif %}
                 {% if certificate.credential_id %}<p><strong>ID:</strong> {{ certificate.credential_id }}</p>{% endif %}
-                {% cycle 'files/Coursera_Supervised_ML.pdf' 'files/cipher_schools_python.pdf' 'files/free-code-camp.pdf' as certificate_static_file %}
-                <a href="{% static certificate_static_file %}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View Certificate</a>
+                {% if certificate.credential_url %}
+                <a href="{{ certificate.credential_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View Certificate</a>
+                {% elif certificate.certificate_file %}
+                <a href="{{ certificate.certificate_file.url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View Certificate</a>
+                {% endif %}
             </article>
             {% empty %}
             <article class="card">
