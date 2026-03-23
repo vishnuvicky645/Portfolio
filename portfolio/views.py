@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.conf import settings
+from pathlib import Path
 
 from .forms import ContactMessageForm
 from .models import (
@@ -69,11 +70,28 @@ def home(request):
 	databases = Skill.objects.filter(category="databases")
 	soft_skills = Skill.objects.filter(category="soft")
 	projects = Project.objects.all()
-	certificates = Certificate.objects.all()
+	certificates = list(Certificate.objects.all())
 	experiences = Experience.objects.all()
 	educations = Education.objects.all()
 	achievements = Achievement.objects.all()
 	open_source_contributions = OpenSourceContribution.objects.all()
+
+	for certificate in certificates:
+		certificate.view_url = ""
+
+		if certificate.certificate_file:
+			file_name = certificate.certificate_file.name
+			absolute_media_file = Path(settings.MEDIA_ROOT) / file_name
+			if absolute_media_file.exists():
+				certificate.view_url = certificate.certificate_file.url
+			else:
+				fallback_name = Path(file_name).name
+				fallback_static_path = Path(settings.BASE_DIR) / "static" / "files" / fallback_name
+				if fallback_static_path.exists():
+					certificate.view_url = f"{settings.STATIC_URL}files/{fallback_name}"
+
+		if not certificate.view_url and certificate.credential_url:
+			certificate.view_url = certificate.credential_url
 
 	context = {
 		"profile": profile,

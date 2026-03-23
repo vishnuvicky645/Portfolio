@@ -214,10 +214,10 @@
                 <p><strong>Issuer:</strong> {{ certificate.issuer }}</p>
                 {% if certificate.issue_date %}<p><strong>Date:</strong> {{ certificate.issue_date }}</p>{% endif %}
                 {% if certificate.credential_id %}<p><strong>ID:</strong> {{ certificate.credential_id }}</p>{% endif %}
-                {% if certificate.credential_url %}
-                <a href="{{ certificate.credential_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View Certificate</a>
-                {% elif certificate.certificate_file %}
-                <a href="{{ certificate.certificate_file.url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View Certificate</a>
+                {% if certificate.view_url %}
+                <a href="{{ certificate.view_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">View Certificate</a>
+                {% else %}
+                <span class="btn btn-sm btn-outline" aria-disabled="true">Certificate Unavailable</span>
                 {% endif %}
             </article>
             {% empty %}
