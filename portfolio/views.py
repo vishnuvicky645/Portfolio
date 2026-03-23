@@ -23,8 +23,7 @@ def home(request):
 		if form.is_valid():
 			contact_message = form.save()
 
-			receiver_email = settings.CONTACT_RECEIVER_EMAIL
-			if receiver_email:
+			if settings.DEFAULT_FROM_EMAIL and settings.EMAIL_HOST_USER:
 				email_subject = f"Portfolio Contact: {contact_message.subject}"
 				email_body = (
 					f"You received a new contact message from your portfolio form.\n\n"
@@ -33,12 +32,11 @@ def home(request):
 					f"Subject: {contact_message.subject}\n\n"
 					f"Message:\n{contact_message.message}"
 				)
-				EMAIL_HOST_USER = settings.EMAIL_HOST_USER
 				sent_count = send_mail(
 					email_subject,
 					email_body,
-					EMAIL_HOST_USER,
-					[EMAIL_HOST_USER],
+					settings.DEFAULT_FROM_EMAIL,
+					[settings.EMAIL_HOST_USER],
 					fail_silently=False,
 				)
 				if sent_count == 1:
@@ -51,7 +49,7 @@ def home(request):
 			else:
 				messages.warning(
 					request,
-					"Message saved, but email receiving address is not configured.",
+					"Message saved, but email settings are not configured.",
 				)
 			return redirect("portfolio:home")
 	else:
