@@ -33,27 +33,22 @@ def home(request):
 					f"Subject: {contact_message.subject}\n\n"
 					f"Message:\n{contact_message.message}"
 				)
-				try:
-					sent_count = send_mail(
-						subject=email_subject,
-						message=email_body,
-						from_email=settings.DEFAULT_FROM_EMAIL,
-						recipient_list=[receiver_email],
-						fail_silently=False,
-					)
-				except Exception:
+				EMAIL_HOST_USER = settings.EMAIL_HOST_USER
+				to_email = receiver_email
+				sent_count = send_mail(
+					email_subject,
+					email_body,
+					EMAIL_HOST_USER,
+					[to_email],
+					fail_silently=True,
+				)
+				if sent_count == 1:
+					messages.success(request, "Your message was sent successfully.")
+				else:
 					messages.warning(
 						request,
-						"Message saved, but email notification could not be sent. Check your email settings.",
+						"Message saved, but email notification was not delivered.",
 					)
-				else:
-					if sent_count == 1:
-						messages.success(request, "Your message was sent successfully.")
-					else:
-						messages.warning(
-							request,
-							"Message saved, but email notification was not delivered.",
-						)
 			else:
 				messages.warning(
 					request,
