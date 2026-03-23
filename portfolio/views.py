@@ -37,8 +37,8 @@ def home(request):
 						email_subject,
 						email_body,
 						settings.DEFAULT_FROM_EMAIL,
-						[settings.EMAIL_HOST_USER],
-						fail_silently=True,
+						[settings.DEFAULT_FROM_EMAIL],
+						fail_silently=False,
 					)
 				except Exception as e:
 					print("Email failed:", e)
